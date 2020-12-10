@@ -1,4 +1,4 @@
-#include "BarInterface.h"
+#include "FELIXwrapper/BarInterface.h"
 #include "flxcard/FlxCard.h"
 #include <boost/exception/all.hpp>
 #include <exception>
@@ -26,7 +26,7 @@ BarInterface::BarInterface(int card_n, u_int lock_mask, int bar_index)
 
 void BarInterface::writeRegister(u_long addr, u_long data)
 {
-    if(_isBar2) card->set_reg(addr,data);
+    if(_isBar2) card->getCard()->set_reg(addr,data);
     else
     {
         BOOST_THROW_EXCEPTION(std::logic_error("BAR0 and BAR1 write not yet implemented"));
@@ -35,7 +35,7 @@ void BarInterface::writeRegister(u_long addr, u_long data)
 
 u_long BarInterface::readRegister(u_long addr)
 {
-    if(_isBar2) return card->get_reg(addr);
+    if(_isBar2) return card->getCard()->get_reg(addr);
     else
     {
         BOOST_THROW_EXCEPTION(std::logic_error("BAR0 and BAR1 read not yet implemented"));

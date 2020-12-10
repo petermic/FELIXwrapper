@@ -70,6 +70,7 @@ target_include_directories(FELIXwrapper
   PUBLIC
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
@@ -89,7 +90,7 @@ target_link_libraries(FELIXwrapper
 set_target_properties(FELIXwrapper
   PROPERTIES
   OUTPUT_NAME
-    FELIXwrapper # Adhere to O2 naming conventions
+    FELIXwrapper
 )
 
 ## Used for debugging purposes to expose more options for benchmarking
@@ -166,7 +167,7 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/cmake/FELIXwrapper
 )
 
 # Install headers
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/Lla DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/FELIXwrapper DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
 # Export targets
 install(EXPORT FELIXwrapperTargets

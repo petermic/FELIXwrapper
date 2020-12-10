@@ -13,6 +13,7 @@ public:
     CardInterface(int card_n, u_int lock_mask);
     ~CardInterface();
     u_long getBarBase(int ind);
+    std::shared_ptr<FlxCard> getCard() {return _card;}
 private:
     std::shared_ptr<FlxCard> _card;
     u_long _bar_base[3];
