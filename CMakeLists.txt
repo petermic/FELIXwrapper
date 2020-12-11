@@ -13,11 +13,18 @@ else()
 endif()
 
 # Define project
-project(FELIXwrapper
-  VERSION 0.0.2
-  DESCRIPTION "FELIX wrapper for ALICE O2 software"
-  LANGUAGES CXX
-)
+if(${CMAKE_VERSION} VERSION_GREATER 3.8.1)
+  project(FELIXwrapper
+    VERSION 0.0.2
+    DESCRIPTION "FELIX wrapper for ALICE O2 software"
+    LANGUAGES CXX
+  )
+else()
+  project(FELIXwrapper
+    VERSION 0.0.2
+    LANGUAGES CXX
+  )
+endif()
 
 # Documentation dir
 
@@ -57,6 +64,22 @@ find_package(Boost 1.5.6
   REQUIRED
 )
 
+set(felix_deps FlxCard drivers_rcc regmap)
+
+## find felix related software -- note link_directories is not encouraged by cmake
+## somehow this is the only way that makes everything work
+## also it needs to be called before adding the targets
+if(EXISTS $ENV{FELIX_ROOT})
+  message("-- Detecting FELIX installation at $ENV{FELIX_ROOT}.")
+  foreach(felix_dep ${felix_deps})
+    string(TOLOWER ${felix_dep} dep_loc)
+    include_directories($ENV{FELIX_ROOT}/${dep_loc})
+    link_directories($ENV{FELIX_ROOT}/$ENV{FELIX_ARCH}/${dep_loc})
+  endforeach(felix_dep)
+else()
+  message(FATAL_ERROR "-- Cannot find FELIX.")
+endif()
+
 ####################################
 # Module, library and executable definition
 ####################################
@@ -85,6 +108,7 @@ target_link_libraries(FELIXwrapper
     ${LINK_LIBS}
   PRIVATE
     Threads::Threads
+    ${felix_deps}
 )
 
 set_target_properties(FELIXwrapper
